@@ -1,41 +1,27 @@
-import { useCallback, useEffect, useRef } from 'react';
-import { AppState, AppStateStatus } from 'react-native';
+import { useEffect } from 'react';
+import {
+  stopInactivityTimer,
+  startInactivityTimer,
+  resetInactivityTimer,
+  listenForLock,
+} from '../native/android/ActivityManager';
 import { useDispatch } from 'react-redux';
-import { lockApp, updateActivity } from '../store/lockSlice';
+import { lockApp } from '../store/lockSlice';
 
-const TIMEOUT = 10 * 1000;
-
-export const useInactivityTimer = () => {
+export function useNativeInactivity() {
   const dispatch = useDispatch();
-  const timerRef = useRef<number | null>(null);
-
-  const resetTimer = useCallback(() => {
-    if (timerRef.current) clearTimeout(timerRef.current);
-    dispatch(updateActivity());
-    timerRef.current = setTimeout(() => dispatch(lockApp()), TIMEOUT);
-  }, [dispatch]);
 
   useEffect(() => {
-    const handleAppStateChange = (nextAppState: AppStateStatus) => {
-      if (nextAppState === 'inactive' || nextAppState === 'background') {
-        dispatch(lockApp());
-      } else if (nextAppState === 'active') {
-        console.log('active');
-        resetTimer();
-      }
-    };
-
-    const subscription = AppState.addEventListener(
-      'change',
-      handleAppStateChange,
-    );
-    resetTimer();
+    startInactivityTimer(10000);
+    const unsubscribe = listenForLock(() => {
+      dispatch(lockApp());
+    });
 
     return () => {
-      if (timerRef.current) clearTimeout(timerRef.current);
-      subscription.remove();
+      unsubscribe();
+      stopInactivityTimer();
     };
-  }, [dispatch, resetTimer]);
+  }, [dispatch]);
 
-  return { resetTimer };
-};
+  return { resetTimer: resetInactivityTimer };
+}

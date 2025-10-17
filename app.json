@@ -1,4 +1,6 @@
 {
   "name": "rntest",
-  "displayName": "rntest"
+  "slug": "rntest",
+  "version": "1.0.0",
+  "scheme": "rntest"
 }

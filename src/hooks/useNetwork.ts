@@ -10,8 +10,6 @@ export const useNetworkSync = () => {
     const unsubscribe = NetInfo.addEventListener(state => {
       if (state.isConnected) {
         queryClient.invalidateQueries();
-      } else {
-        console.log('[useNetworkSync] Network disconnected');
       }
     });
     return () => unsubscribe();
