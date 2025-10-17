@@ -17,8 +17,7 @@ export const useInactivityTimer = () => {
 
   useEffect(() => {
     const handleAppStateChange = (nextAppState: AppStateStatus) => {
-      if (nextAppState === 'background') {
-        console.log('background');
+      if (nextAppState === 'inactive' || nextAppState === 'background') {
         dispatch(lockApp());
       } else if (nextAppState === 'active') {
         console.log('active');

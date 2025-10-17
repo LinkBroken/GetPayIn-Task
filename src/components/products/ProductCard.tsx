@@ -80,7 +80,6 @@ const ProductCard: React.FC<Props> = ({
     }
     onAddToCart?.(item);
   };
-  console.log('✅ ProductCard loaded');
 
   return (
     <GestureDetector gesture={tap}>
