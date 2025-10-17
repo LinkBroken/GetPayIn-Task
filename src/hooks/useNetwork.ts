@@ -1,4 +1,3 @@
-// hooks/useNetworkSync.ts
 import NetInfo from '@react-native-community/netinfo';
 import { useEffect } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
