@@ -15,7 +15,9 @@ const lockSlice = createSlice({
   initialState,
   reducers: {
     lockApp: state => {
-      state.locked = true;
+      if (!state.locked) {
+        state.locked = true;
+      }
     },
     unlock: state => {
       state.locked = false;
