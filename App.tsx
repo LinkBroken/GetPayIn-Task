@@ -1,45 +1,41 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- */
+import React from 'react';
+import { View, StatusBar, StyleSheet } from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
+import { Provider as ReduxProvider } from 'react-redux';
+import { QueryClientProvider } from '@tanstack/react-query';
+import { store } from './src/store';
+import { queryClient } from './src/utils/reactQueryClient';
+import AppNavigator from './src/navigation/App.Navigator';
+import { useNetworkSync } from './src/hooks/useNetwork';
+import { useInactivityTimer } from './src/hooks/useInactivityTimer';
 
-import { NewAppScreen } from '@react-native/new-app-screen';
-import { StatusBar, StyleSheet, useColorScheme, View } from 'react-native';
-import {
-  SafeAreaProvider,
-  useSafeAreaInsets,
-} from 'react-native-safe-area-context';
-
-function App() {
-  const isDarkMode = useColorScheme() === 'dark';
+function RootApp() {
+  const { resetTimer } = useInactivityTimer();
+  useNetworkSync(); //
 
   return (
-    <SafeAreaProvider>
-      <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-      <AppContent />
-    </SafeAreaProvider>
+    <View style={styles.container} pointerEvents="box-none">
+      <StatusBar barStyle="dark-content" backgroundColor="#fff" />
+      <NavigationContainer onStateChange={resetTimer}>
+        <AppNavigator />
+      </NavigationContainer>
+    </View>
   );
 }
 
-function AppContent() {
-  const safeAreaInsets = useSafeAreaInsets();
-
+export default function App() {
   return (
-    <View style={styles.container}>
-      <NewAppScreen
-        templateFileName="App.tsx"
-        safeAreaInsets={safeAreaInsets}
-      />
-    </View>
+    <ReduxProvider store={store}>
+      <QueryClientProvider client={queryClient}>
+        <RootApp />
+      </QueryClientProvider>
+    </ReduxProvider>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    flexGrow: 1,
   },
 });
-
-export default App;
