@@ -6,6 +6,8 @@ export interface Product {
   description: string;
   thumbnail: string;
   category: string;
+  price: number;
+  rating: number;
 }
 
 export interface ProductsResponse {
@@ -13,25 +15,41 @@ export interface ProductsResponse {
 }
 
 export const getAllProducts = async (): Promise<Product[]> => {
-  const { data } = await api.get<ProductsResponse>('/products');
-  return data.products;
+  try {
+    const { data } = await api.get<ProductsResponse>('/products');
+    return data.products;
+  } catch (error) {
+    throw error;
+  }
 };
 
 export const getProductsByCategory = async (
   category: string,
 ): Promise<Product[]> => {
-  const { data } = await api.get<ProductsResponse>(
-    `/products/category/${category}`,
-  );
-  return data.products;
+  try {
+    const { data } = await api.get<ProductsResponse>(
+      `/products/category/${category}`,
+    );
+    return data.products;
+  } catch (error) {
+    throw error;
+  }
 };
 
 export const getCategories = async (): Promise<string[]> => {
-  const { data } = await api.get<string[]>('/products/categories');
-  return data;
+  try {
+    const { data } = await api.get<string[]>('/products/categories');
+    return data;
+  } catch (error) {
+    throw error;
+  }
 };
 
 export const deleteProduct = async (id: number) => {
-  const { data } = await api.delete(`/products/${id}`);
-  return data;
+  try {
+    const { data } = await api.delete(`/products/${id}`);
+    return data;
+  } catch (error) {
+    throw error;
+  }
 };
