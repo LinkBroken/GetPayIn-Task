@@ -2,7 +2,7 @@ import { api } from './axiosInstance';
 import { storage } from '../utils/mmkv';
 
 export interface LoginResponse {
-  token: string;
+  accessToken: string;
   username: string;
   email?: string;
 }
@@ -15,15 +15,23 @@ export interface LoginPayload {
 export const loginUser = async (
   payload: LoginPayload,
 ): Promise<LoginResponse> => {
-  const { data } = await api.post<LoginResponse>('/auth/login', payload);
-  storage.set('token', data.token);
-  storage.set('username', data.username);
-  return data;
+  try {
+    const { data } = await api.post<LoginResponse>('/auth/login', payload);
+    storage.set('token', data.accessToken);
+    storage.set('username', data.username);
+    return data;
+  } catch (error) {
+    throw error;
+  }
 };
 
 export const getCurrentUser = async (): Promise<LoginResponse> => {
-  const { data } = await api.get<LoginResponse>('/auth/me');
-  return data;
+  try {
+    const { data } = await api.get<LoginResponse>('/auth/me');
+    return data;
+  } catch (error) {
+    throw error;
+  }
 };
 
 export const logoutUser = async (): Promise<void> => {
