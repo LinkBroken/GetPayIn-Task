@@ -4,7 +4,7 @@ import {
   startInactivityTimer,
   resetInactivityTimer,
   listenForLock,
-} from '../native/android/ActivityManager';
+} from '../native/android_ios/ActivityManager';
 import { useDispatch } from 'react-redux';
 import { lockApp } from '../store/lockSlice';
 
