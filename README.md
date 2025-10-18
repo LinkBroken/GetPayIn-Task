@@ -104,7 +104,7 @@ npm run lint # Lint
 npm run test # Tests  
 npx prettier --write # Format
 
-Omer Ahmed — Frontend / React Native Developer
+Omer Mohamed — Frontend / React Native Developer
 
 🌐 Portfolio | https://damourite.com
 
