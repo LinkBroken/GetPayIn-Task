@@ -2,11 +2,12 @@ import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { useSelector } from 'react-redux';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { getAllProducts, deleteProduct } from '../../api/productsApi';
+import { getAllProducts, deleteProduct, Product } from '../../api/productsApi';
 import { ProductList } from '../../components/products/ProductList';
 import { OfflineBanner } from '../../components/common/Offline';
 import { RootState } from '../../store';
 import { Toast } from '../../components/common/Toast';
+import { useNavigation } from '@react-navigation/native';
 
 export default function AllProductsScreen() {
   const [visible, setVisible] = React.useState(false);
@@ -17,6 +18,8 @@ export default function AllProductsScreen() {
   const queryClient = useQueryClient();
   const { username } = useSelector((state: RootState) => state.auth);
   const isSuperadmin = username === 'emilys';
+
+  const navigation = useNavigation();
 
   const { data, isLoading, isFetching, refetch } = useQuery({
     queryKey: ['products'],
@@ -61,6 +64,9 @@ export default function AllProductsScreen() {
         onRefresh={refetch}
         onDelete={handleDelete}
         isSuperadmin={isSuperadmin}
+        onNavigateToProductCategory={(product: Product) => {
+          navigation.navigate('Category', { category: product.category });
+        }}
       />
     </View>
   );

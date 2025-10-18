@@ -16,13 +16,13 @@ import Animated, {
 } from 'react-native-reanimated';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import LinearGradient from 'react-native-linear-gradient';
-import { Trash2, Star, ShoppingCart } from 'lucide-react-native';
+import { Trash2, Star, Eye } from 'lucide-react-native';
 import { Product } from '../../api/productsApi';
 
 interface Props {
   item: Product;
   onDelete?: (id: number) => void;
-  onAddToCart?: (product: Product) => void;
+  onNavigateToProductCategory?: (product: Product) => void;
   isSuperadmin?: boolean;
 }
 
@@ -31,7 +31,7 @@ const AnimatedTouchable = Animated.createAnimatedComponent(TouchableOpacity);
 const ProductCard: React.FC<Props> = ({
   item,
   onDelete,
-  onAddToCart,
+  onNavigateToProductCategory,
   isSuperadmin,
 }) => {
   const scale = useSharedValue(1);
@@ -70,15 +70,6 @@ const ProductCard: React.FC<Props> = ({
       });
     }
     onDelete?.(item?.id);
-  };
-
-  const handleCartPress = () => {
-    if (Platform.OS !== 'web') {
-      scale.value = withSpring(0.95, {}, () => {
-        scale.value = withSpring(1);
-      });
-    }
-    onAddToCart?.(item);
   };
 
   return (
@@ -127,13 +118,13 @@ const ProductCard: React.FC<Props> = ({
               )}
 
               <View style={styles.actions}>
-                {onAddToCart && (
+                {onNavigateToProductCategory && (
                   <TouchableOpacity
                     style={styles.cartButton}
-                    onPress={handleCartPress}
+                    onPress={() => onNavigateToProductCategory(item)}
                     activeOpacity={0.7}
                   >
-                    <ShoppingCart size={18} color="#ffffff" />
+                    <Eye size={18} color="#ffffff" />
                   </TouchableOpacity>
                 )}
 
@@ -237,26 +228,29 @@ const styles = StyleSheet.create({
   footer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
+    gap: 2,
     alignItems: 'center',
     marginTop: 'auto',
   },
   priceContainer: {
     flexDirection: 'row',
+    flexWrap: 'wrap',
     alignItems: 'baseline',
   },
   priceSymbol: {
-    fontSize: 16,
+    fontSize: 12,
     fontWeight: '700',
     color: '#2ecc71',
     marginRight: 2,
   },
   price: {
-    fontSize: 24,
+    fontSize: 18,
     fontWeight: '800',
     color: '#2ecc71',
   },
   actions: {
     flexDirection: 'row',
+    flexWrap: 'wrap',
     gap: 8,
   },
   cartButton: {

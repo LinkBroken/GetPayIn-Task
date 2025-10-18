@@ -13,6 +13,7 @@ interface Props {
   onRefresh?: () => void;
   onDelete?: (id: number) => void;
   isSuperadmin?: boolean;
+  onNavigateToProductCategory?: (product: Product) => void;
 }
 
 export const ProductList: React.FC<Props> = ({
@@ -23,6 +24,7 @@ export const ProductList: React.FC<Props> = ({
   onRefresh,
   onDelete,
   isSuperadmin,
+  onNavigateToProductCategory,
 }) => {
   if (loading) return <Loader />;
   if (!data) return <View style={styles.emptyView} />;
@@ -41,6 +43,7 @@ export const ProductList: React.FC<Props> = ({
             item={item}
             onDelete={onDelete}
             isSuperadmin={isSuperadmin}
+            onNavigateToProductCategory={onNavigateToProductCategory}
           />
         )}
         ListEmptyComponent={<View style={styles.emptyView} />}

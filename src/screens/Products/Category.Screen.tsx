@@ -4,13 +4,17 @@ import { useQuery } from '@tanstack/react-query';
 import { getProductsByCategory } from '../../api/productsApi';
 import { ProductList } from '../../components/products/ProductList';
 import { OfflineBanner } from '../../components/common/Offline';
+import { useRoute } from '@react-navigation/native';
 
-const CATEGORY = 'smartphones';
-
+type CategoryParams = {
+  category: string;
+};
 export default function CategoryScreen() {
+  const route = useRoute() as { params: CategoryParams };
+
   const { data, isLoading, isFetching, refetch } = useQuery({
-    queryKey: ['category-products', CATEGORY],
-    queryFn: () => getProductsByCategory(CATEGORY),
+    queryKey: ['category-products', route.params?.category],
+    queryFn: () => getProductsByCategory(route.params?.category),
   });
 
   return (
