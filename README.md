@@ -1,4 +1,4 @@
-# 🛍️ React Native Store App — Summary (80 lines)
+# 🛍️ React Native Store App — Summary
 
 A **production-ready React Native app** showcasing enterprise-grade architecture, **secure authentication**, **offline-first behavior**, and **biometric protection**.  
 Built with **React Native 0.82**, **TypeScript**, **React Query**, and **Redux Toolkit**, it integrates the **DummyJSON API** for a real-world product catalog experience.
